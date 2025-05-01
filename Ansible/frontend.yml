@@ -1,0 +1,24 @@
+- hosts: frontend
+  become: true
+  tasks:
+    - name: Ensure /tmp/frontendapp exists
+      file:
+        path: /tmp/frontendapp
+        state: directory
+
+    - name: Copy frontend files from controller to VMs
+      copy:
+        src: /home/azureuser/frontend/
+        dest: /tmp/frontendapp/
+        owner: azureuser
+        group: azureuser
+        mode: 0755
+
+    - name: Build and run frontend Docker container
+      shell: |
+        docker stop frontendapp || true
+        docker rm frontendapp || true
+        docker rmi frontendapp || true
+        cd /tmp/frontendapp
+        docker build -t frontendapp .
+        docker run -d --name frontendapp -p 80:3000 frontendapp

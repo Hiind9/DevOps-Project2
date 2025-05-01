@@ -1,0 +1,24 @@
+- hosts: backend
+  become: true
+  tasks:
+    - name: Ensure /tmp/backendapp exists
+      file:
+        path: /tmp/backendapp
+        state: directory
+
+    - name: Copy backend files from controller to VMs
+      copy:
+        src: /home/azureuser/backend/
+        dest: /tmp/backendapp/
+        owner: azureuser
+        group: azureuser
+        mode: 0755
+
+    - name: Build and run backend Docker container
+      shell: |
+        docker stop backendapp || true
+        docker rm backendapp || true
+        docker rmi backendapp || true
+        cd /tmp/backendapp
+        docker build -t backendapp .
+        docker run -d --name backendapp -p 80:3000 backendapp
