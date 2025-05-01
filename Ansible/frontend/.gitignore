@@ -1,2 +1,7 @@
 node_modules/
 test-results/
+
+.env
+.env.local
+.env.development
+.env.production
