@@ -29,33 +29,6 @@ module "network" {
     appgateway = {
       address_prefix = "10.0.4.0/24"
     }
-
-    AzureBastionSubnet = {
-      address_prefix = "10.0.5.0/26" # Must be /26 or larger
-      is_bastion     = true          # Critical flag
-    }                                # Dedicated Bastion subnet
-  }
-}
-
-# Create Public IP for Bastion
-resource "azurerm_public_ip" "bastion_ip" {
-  name                = "bastion-ip"
-  location            = module.resource_group.location
-  resource_group_name = module.resource_group.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
-
-# Create Bastion Host
-resource "azurerm_bastion_host" "main" {
-  name                = "group1-bastion"
-  location            = module.resource_group.location
-  resource_group_name = module.resource_group.name
-
-  ip_configuration {
-    name                 = "configuration"
-    subnet_id            = module.network.subnet_ids["AzureBastionSubnet"]
-    public_ip_address_id = azurerm_public_ip.bastion_ip.id
   }
 }
 

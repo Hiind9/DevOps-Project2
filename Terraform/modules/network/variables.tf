@@ -18,7 +18,6 @@ variable "subnets" {
   type = map(object({
     address_prefix  = string
     service_endpoints = optional(list(string), [])
-    is_bastion        = optional(bool, false) # New flag for Bastion subnet
   }))
 }
 
