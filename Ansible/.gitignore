@@ -1,0 +1,18 @@
+# System files
+.bash*
+.profile
+.viminfo
+.sudo_as_admin_successful
+.cache/
+.ssh/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Ansible
+*.retry
+
+# Ignore embedded .git folders
+**/.git/
